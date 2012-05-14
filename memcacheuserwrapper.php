@@ -2,7 +2,7 @@
 
 /**
  * 
- * 	This code is distributed under the terms and conditions of the MIT license.
+ *	This code is distributed under the terms and conditions of the MIT license.
  *
  *	Copyright © 2012 Jose Ignacio Honrado
  *
@@ -27,17 +27,17 @@ class MemcacheUserWrapper {
 
 	const MEMCACHE_HOST = 'localhost';
 	const MEMCACHE_PORT = 11211;
-	const NS_CUSTOM_PREFIX = 'my_ns';
+	const NS_CUSTOM_PREFIX = 'my_ns_';
 
-	private $user_id;   // User id for all stored data
-	private $connected; // Flag for server connection status
-	private $server;    // Memcache PHP object
-	private $ns_val;    // Current namespace suffix
+	private $user_id = '';   // User id for all stored data
+	private $connected = false; // Flag for server connection status
+	private $server = null;    // Memcache PHP object
+	private $ns_val = 0;    // Current namespace suffix
 
 	/**
 	* Constructor
 	*/
-	function MemcacheUserWrapper($user_id='user') {
+	function MemcacheUserWrapper($user_id) {
 		$this->user_id = $user_id;
 
 		$this->connect();
