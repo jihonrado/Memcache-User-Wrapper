@@ -34,15 +34,26 @@ class MemcacheUserWrapper {
 	const MEMCACHE_PORT = 11211;
 	const NS_CUSTOM_PREFIX = 'my_ns_';
 
+	private static $instance = array(); // Singleton instances
 	private $user_id = '';   // User id for all stored data
 	private $connected = false; // Flag for server connection status
 	private $server = null;    // Memcache PHP object
 	private $ns_val = 0;    // Current namespace suffix
 
 	/**
+	* Singleton method
+	*/
+	public static function instance($user_id='default') {
+		if (!self::$instance[$user_id]) {
+			self::$instance[$user_id] = new MemcacheUserWrapper($user_id);
+		}
+		return self::$instance[$user_id];
+	}
+
+	/**
 	* Constructor
 	*/
-	function MemcacheUserWrapper($user_id) {
+	private function __construct($user_id) {
 		$this->user_id = $user_id;
 
 		$this->connect();

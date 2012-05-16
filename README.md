@@ -25,7 +25,7 @@ Edit memcacheuserwrapper.php and customize the constants to fit your memcache in
 Try to get the data from memcache and if it is not there, fetch from DB or wherever.
 
 	$userID = currentUserID();
-	$memcache = new MemcacheUserWrapper($userID);
+	$memcache = MemcacheUserWrapper::instance($userID);
 		
 	$key = 'key_to_fetch';
 	if (($items = $memcache->get($key)) === false) {
@@ -45,7 +45,7 @@ Try to get the data from memcache and if it is not there, fetch from DB or where
 When an item has changed we should call "replace" instead of "set".
 
 	$userID = currentUserID();
-	$memcache = new MemcacheUserWrapper($userID);
+	$memcache = MemcacheUserWrapper::instance($userID);
 
 	// User changed one of his items
 	$item = $newItem;
@@ -57,7 +57,7 @@ When an item has changed we should call "replace" instead of "set".
 When an item has been deleted we must delete its cached data.
 
 	$userID = currentUserID();
-	$memcache = new MemcacheUserWrapper($userID);
+	$memcache = MemcacheUserWrapper::instance($userID);
 	
 	// User deleted one of his items
 	$item->delete();
@@ -70,7 +70,7 @@ When an item has been deleted we must delete its cached data.
 When setting or replacing data we could specify its time-to-live (max. 30 days). Default is 0 (never expire).
 
 	$userID = currentUserID();
-	$memcache = new MemcacheUserWrapper($userID);
+	$memcache = MemcacheUserWrapper::instance($userID);
 
 	// Store $data for 1 week
 	$data = obtainWeekReport();
@@ -84,7 +84,7 @@ When setting or replacing data we could specify its time-to-live (max. 30 days).
 Instead of deleting all user data stored one by one, that even we may don't know all its keys, we "delete" all user data.
 
 	$userID = currentUserID();
-	$memcache = new MemcacheUserWrapper($userID);
+	$memcache = MemcacheUserWrapper::instance($userID);
 
 	// Significant user data changed
 	...
