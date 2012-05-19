@@ -28,23 +28,31 @@
  *
  */
 
-class MemcacheUserWrapper {
+class MemcacheUserWrapper
+{
 
 	const MEMCACHE_HOST = 'localhost';
 	const MEMCACHE_PORT = 11211;
 	const NS_CUSTOM_PREFIX = 'my_ns_';
 
-	private static $instance = array(); // Singleton instances
-	private $user_id = '';   // User id for all stored data
-	private $connected = false; // Flag for server connection status
-	private $server = null;    // Memcache PHP object
-	private $ns_val = 0;    // Current namespace suffix
+	// Singleton instances
+	private static $instance = array();
+	// User id for all stored data
+	private $user_id = null;
+	// Server connection status flag
+	private $connected = false;
+	// Memcache PHP object
+	private $server = null;
+	// Current namespace suffix
+	private $ns_val = 0;
 
 	/**
 	* Singleton method
 	*/
-	public static function instance($user_id='default') {
-		if (!self::$instance[$user_id]) {
+	public static function instance($user_id='default')
+	{
+		if (!self::$instance[$user_id])
+		{
 			self::$instance[$user_id] = new MemcacheUserWrapper($user_id);
 		}
 		return self::$instance[$user_id];
@@ -53,20 +61,22 @@ class MemcacheUserWrapper {
 	/**
 	* Constructor
 	*/
-	private function __construct($user_id) {
+	private function __construct($user_id)
+	{
 		$this->user_id = $user_id;
 
 		$this->connect();
 
-		if ($this->connected) {
+		if ($this->connected)
+		{
 			$this->ns_val = $this->server->get($this->getKeyPrefix());
 
 			// If namespace not set, initialize it
-			if ($this->ns_val === false) {
+			if ($this->ns_val === false)
+			{
 				// Let's generating random numbers until we found a not used one
-				do {
-					$random_num = rand(1, 10000);
-				} while ($this->server->get($this->getKeyPrefix().'_'.$random_num) == true);
+				do $random_num = rand(1, 10000);
+				while ($this->server->get($this->getKeyPrefix().'_'.$random_num) == true);
 
 				// Store random number used and namespace key
 				$this->server->set($this->getKeyPrefix().'_'.$random_num, true);
@@ -78,7 +88,8 @@ class MemcacheUserWrapper {
 	/**
 	* Destructor
 	*/
-	function __destruct() {
+	function __destruct()
+	{
 		// Close connection to memcache server
 		$this->server->close();
 	}
@@ -86,10 +97,12 @@ class MemcacheUserWrapper {
 	/**
 	* Connect to memcache server
 	*/
-	private function connect() {
+	private function connect()
+	{
 		if ($this->connected) return;
 
-		if (class_exists('Memcache')) {
+		if (class_exists('Memcache'))
+		{
 			$this->connected = true;
 
 			$this->server = new Memcache();
@@ -102,7 +115,8 @@ class MemcacheUserWrapper {
 	*
 	* @return string key prefix
 	*/
-	private function getKeyPrefix() {
+	private function getKeyPrefix()
+	{
 		return self::NS_CUSTOM_PREFIX . $this->user_id;
 	}
 
@@ -112,7 +126,8 @@ class MemcacheUserWrapper {
 	* @param string $key key of data to be retrieved
 	* @return string full key
 	*/
-	private function getFullKey($key) {
+	private function getFullKey($key)
+	{
 		return $this->getKeyPrefix() . '_' . $this->ns_val . '_' . $key;
 	}
 
@@ -121,7 +136,8 @@ class MemcacheUserWrapper {
 	*
 	* @return string user id
 	*/
-	public function getUserId() {
+	public function getUserId()
+	{
 		return $this->user_id;
 	}
 
@@ -130,7 +146,8 @@ class MemcacheUserWrapper {
 	*
 	* @return boolean true if success, false if error
 	*/
-	public function clearNameSpace() {
+	public function clearNameSpace()
+	{
 		if (!$this->connected) return false;
 
 		// Increment key
@@ -149,7 +166,8 @@ class MemcacheUserWrapper {
 	* @param string $key key of data to be retrieved
 	* @return mixed $data data stored, false if key not found or error
 	*/
-	public function get($key) {
+	public function get($key)
+	{
 		if (!$this->connected) return false;
 
 		return $this->server->get($this->getFullKey($key));
@@ -164,7 +182,8 @@ class MemcacheUserWrapper {
 	* @param int $expire expiry time
 	* @return boolean true if data was stored, false if error
 	*/
-	public function set($key, $data, $expire=0, $flag=0) {
+	public function set($key, $data, $expire=0, $flag=0)
+	{
 		if (!$this->connected) return false;
 
 		return $this->server->set($this->getFullKey($key), $data, $flag, $expire);
@@ -179,7 +198,8 @@ class MemcacheUserWrapper {
 	* @param int $expire expiry time
 	* @return boolean true if data was stored, false if key not found or error
 	*/
-	public function replace($key, $data, $expire=0, $flag=0) {
+	public function replace($key, $data, $expire=0, $flag=0)
+	{
 		if (!$this->connected) return false;
 
 		return $this->server->replace($this->getFullKey($key), $data, $flag, $expire);
@@ -191,7 +211,8 @@ class MemcacheUserWrapper {
 	* @param string $key key of data to be stored	
 	* @return boolean true if data was deleted, false if key not found or error
 	*/
-	public function delete($key) {
+	public function delete($key)
+	{
 		if (!$this->connected) return false;
 
 		return $this->server->delete($this->getFullKey($key));

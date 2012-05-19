@@ -17,7 +17,7 @@ Edit memcacheuserwrapper.php and customize the constants to fit your memcache in
 
 	const MEMCACHE_HOST = 'localhost';
 	const MEMCACHE_PORT = 11211;
-	const NS_CUSTOM_PREFIX = 'my_ns';
+	const NS_CUSTOM_PREFIX = 'my_ns_';
 
 ## Usage
 
@@ -37,9 +37,6 @@ Try to get the data from memcache and if it is not there, fetch from DB or where
 	}
 	
 	// Use $items
-	foreach ($items as $item) {
-		...
-	}
 
 ### Item replacement
 When an item has changed we should call "replace" instead of "set".
@@ -66,7 +63,7 @@ When an item has been deleted we must delete its cached data.
 	$memcache->delete('list_of_items');
 	$memcache->delete('item_x');
 	
-### Setting expiry time and compress
+### Setting expiry time and compression
 When setting or replacing data we could specify its time-to-live (max. 30 days). Default is 0 (never expire).
 
 	$userID = currentUserID();
