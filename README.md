@@ -69,13 +69,9 @@ When setting or replacing data we could specify its time-to-live (max. 30 days).
 	$userID = currentUserID();
 	$memcache = MemcacheUserWrapper::instance($userID);
 
-	// Store $data for 1 week
+	// Store compressed $data for 1 week
 	$data = obtainWeekReport();
-	$memcache->set('my_week_report', $data, 20160);
-
-	// Store $data compressed
-	$data = obtainWeekReport();
-	$memcache->set('my_week_report', $data, 20160, MEMCACHE_COMPRESSED);
+	$memcache->set('my_week_report', $data, MEMCACHE_COMPRESSED, 20160);
 	
 ### Clearing namespace
 Instead of deleting all user data stored one by one, that even we may don't know all its keys, we "delete" all user data.

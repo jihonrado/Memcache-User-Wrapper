@@ -30,7 +30,6 @@
 
 class MemcacheUserWrapper
 {
-
 	const MEMCACHE_HOST = 'localhost';
 	const MEMCACHE_PORT = 11211;
 	const NS_CUSTOM_PREFIX = 'my_ns_';
@@ -51,7 +50,7 @@ class MemcacheUserWrapper
 	*/
 	public static function instance($user_id='default')
 	{
-		if (!self::$instance[$user_id])
+		if (!array_key_exists($user_id, self::$instance))
 		{
 			self::$instance[$user_id] = new MemcacheUserWrapper($user_id);
 		}
@@ -182,7 +181,7 @@ class MemcacheUserWrapper
 	* @param int $expire expiry time
 	* @return boolean true if data was stored, false if error
 	*/
-	public function set($key, $data, $expire=0, $flag=0)
+	public function set($key, $data, $flag=0, $expire=0)
 	{
 		if (!$this->connected) return false;
 
@@ -198,7 +197,7 @@ class MemcacheUserWrapper
 	* @param int $expire expiry time
 	* @return boolean true if data was stored, false if key not found or error
 	*/
-	public function replace($key, $data, $expire=0, $flag=0)
+	public function replace($key, $data, $flag=0, $expire=0)
 	{
 		if (!$this->connected) return false;
 
@@ -217,7 +216,6 @@ class MemcacheUserWrapper
 
 		return $this->server->delete($this->getFullKey($key));
 	}
-
 }
 
 ?>
