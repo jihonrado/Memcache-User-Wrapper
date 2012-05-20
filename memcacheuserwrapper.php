@@ -145,7 +145,7 @@ class MemcacheUserWrapper
 	*
 	* @return boolean true if success, false if error
 	*/
-	public function clearNameSpace()
+	public function clearNamespace()
 	{
 		if (!$this->connected) return false;
 
