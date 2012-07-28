@@ -85,7 +85,7 @@ Instead of deleting all user data stored one by one, that even we may don't know
 	// Invalidate all stored user data
 	$memcache->clearNamespace();
 	
-# License
+## License
 This code is distributed under the terms and conditions of the MIT license.
 
 Copyright (c) 2012 Jose Ignacio Honrado
