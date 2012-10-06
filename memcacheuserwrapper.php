@@ -75,7 +75,7 @@ class MemcacheUserWrapper
 			{
 				// Let's generating random numbers until we found a not used one
 				do $random_num = rand(1, 10000);
-				while ($this->server->get($this->getKeyPrefix().'_'.$random_num) == true);
+				while ($this->server->get($this->getKeyPrefix().'_'.$random_num) === true);
 
 				// Store random number used and namespace key
 				$this->server->set($this->getKeyPrefix().'_'.$random_num, true);
