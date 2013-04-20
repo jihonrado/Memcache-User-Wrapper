@@ -64,7 +64,7 @@ When an item has been deleted we must delete its cached data.
 	$memcache->delete('item_x');
 	
 ### Setting expiry time and compression
-When setting or replacing data we could specify its time-to-live (max. 30 days). Default is 0 (never expire).
+When setting or replacing data we could specify its time-to-live (max. 30 days). Default is 0 (never expires).
 
 	$userID = currentUserID();
 	$memcache = MemcacheUserWrapper::instance($userID);
