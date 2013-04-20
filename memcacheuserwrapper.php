@@ -5,7 +5,7 @@
  *	Memcache User Wrapper
  *	PHP class that wraps all the typical operations in memcache using pseudo-namespacing to have
  *	independent user data.
- *	https://bitbucket.org/jihonrado/memcache-user-wrapper
+ *	https://github.com/jihonrado/Memcache-User-Wrapper
  *
  *	This code is distributed under the terms and conditions of the MIT license.
  *
